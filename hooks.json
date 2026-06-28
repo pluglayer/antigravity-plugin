@@ -1,0 +1,17 @@
+{
+  "pluglayer-command-safety": {
+    "enabled": false,
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 scripts/command_safety_hook.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
