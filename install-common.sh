@@ -40,9 +40,6 @@ PLUGLAYER_API_KEY="${PLUGLAYER_API_KEY:-}"
 PLUGLAYER_API_URL="${PLUGLAYER_API_URL:-${DEFAULT_API_URL}}"
 INITIAL_API_KEY="${PLUGLAYER_API_KEY}"
 INITIAL_API_URL="${PLUGLAYER_API_URL}"
-MARKETPLACE_FILE="${HOME}/.agents/plugins/marketplace.json"
-MARKETPLACE_PLUGIN_DIR="${HOME}/.agents/plugins/plugins"
-MARKETPLACE_NAME="personal"
 INSTALLING_FROM_TARGET_DIR=0
 ANTIGRAVITY_CLI_PLUGIN_DIR="${HOME}/.gemini/antigravity-cli/plugins/pluglayer-antigravity-plugin"
 
@@ -429,98 +426,6 @@ remove_existing_install() {
   fi
 }
 
-install_claude() {
-  step "Installing PlugLayer into Claude Code"
-  require_cmd claude
-  ensure_uv
-
-  mkdir -p "${TARGET_PLUGIN_DIR}"
-  cp -R "${STAGED_PLUGIN_DIR}/." "${TARGET_PLUGIN_DIR}/"
-  write_launcher "${TARGET_LAUNCHER}" "claude" "${TARGET_PLUGIN_DIR}" "--plugin-dir"
-  success "Claude Code now has PlugLayer at ${TARGET_PLUGIN_DIR}"
-}
-
-upsert_codex_marketplace() {
-  mkdir -p "${MARKETPLACE_PLUGIN_DIR}"
-  mkdir -p "${TARGET_PLUGIN_DIR}"
-  cp -R "${STAGED_PLUGIN_DIR}/." "${TARGET_PLUGIN_DIR}/"
-
-  MARKETPLACE_NAME="$(python3 - "${MARKETPLACE_FILE}" "${PLUGIN_NAME}" <<'PY'
-import json
-import os
-import sys
-
-marketplace_path, plugin_name = sys.argv[1], sys.argv[2]
-os.makedirs(os.path.dirname(marketplace_path), exist_ok=True)
-
-if os.path.exists(marketplace_path):
-    with open(marketplace_path, "r", encoding="utf-8") as handle:
-        payload = json.load(handle)
-else:
-    payload = {
-        "name": "personal",
-        "interface": {"displayName": "Personal"},
-        "plugins": [],
-    }
-
-payload.setdefault("name", "personal")
-payload.setdefault("interface", {})
-payload["interface"].setdefault("displayName", "Personal")
-plugins = payload.setdefault("plugins", [])
-
-entry = {
-    "name": plugin_name,
-    "source": {
-        "source": "local",
-        "path": f"./plugins/{plugin_name}",
-    },
-    "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL",
-    },
-    "category": "Developer Tools",
-}
-
-replaced = False
-for index, existing in enumerate(plugins):
-    if isinstance(existing, dict) and existing.get("name") == plugin_name:
-        plugins[index] = entry
-        replaced = True
-        break
-
-if not replaced:
-    plugins.append(entry)
-
-with open(marketplace_path, "w", encoding="utf-8") as handle:
-    json.dump(payload, handle, indent=2)
-    handle.write("\n")
-
-print(payload["name"])
-PY
-)"
-}
-
-install_codex() {
-  step "Installing PlugLayer into the Codex personal marketplace"
-  require_cmd codex
-  ensure_uv
-  upsert_codex_marketplace
-  codex plugin add "${PLUGIN_NAME}@${MARKETPLACE_NAME}"
-  write_launcher "${TARGET_LAUNCHER}" "codex"
-  success "Codex now has PlugLayer installed from the ${MARKETPLACE_NAME} marketplace"
-}
-
-install_cursor() {
-  step "Installing PlugLayer into Cursor"
-  require_cmd cursor
-  ensure_uv
-
-  mkdir -p "${TARGET_PLUGIN_DIR}"
-  cp -R "${STAGED_PLUGIN_DIR}/." "${TARGET_PLUGIN_DIR}/"
-  write_launcher "${TARGET_LAUNCHER}" "cursor"
-  success "Cursor now has PlugLayer at ${TARGET_PLUGIN_DIR}"
-}
-
 install_antigravity() {
   step "Installing PlugLayer into Google Antigravity"
   ensure_uv
@@ -530,6 +435,9 @@ install_antigravity() {
   cp -R "${STAGED_PLUGIN_DIR}/." "${ANTIGRAVITY_CLI_PLUGIN_DIR}/"
   if command -v agy >/dev/null 2>&1; then
     write_launcher "${TARGET_LAUNCHER}" "agy"
+    success "Antigravity CLI launcher created at ${TARGET_LAUNCHER}"
+  else
+    warn "Antigravity CLI was not found. The IDE and CLI plugin directories were still installed; no launcher was created."
   fi
   success "Antigravity IDE plugin: ${TARGET_PLUGIN_DIR}"
   success "Antigravity CLI plugin: ${ANTIGRAVITY_CLI_PLUGIN_DIR}"
@@ -554,6 +462,8 @@ post_install_summary() {
   printf 'Saved token: %s\n' "$(mask_token "${PLUGLAYER_API_KEY}")"
   if [ -x "${TARGET_LAUNCHER}" ]; then
     printf 'CLI launcher: %s\n' "${TARGET_LAUNCHER}"
+  else
+    printf 'CLI launcher: not created; Antigravity can use the installed plugin files directly\n'
   fi
   printf 'IDE plugin directory: %s\n' "${TARGET_PLUGIN_DIR}"
   printf 'CLI plugin directory: %s\n' "${ANTIGRAVITY_CLI_PLUGIN_DIR}"

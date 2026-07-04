@@ -21,7 +21,7 @@ The installer:
 - saves the PlugLayer token in `~/.pluglayer/credentials.env`
 - installs the IDE plugin into `~/.gemini/config/plugins/pluglayer-antigravity-plugin`
 - installs the CLI plugin into `~/.gemini/antigravity-cli/plugins/pluglayer-antigravity-plugin`
-- creates `agy-pluglayer` when the `agy` command is installed
+- does not require the `agy` CLI; when `agy` is installed, it also creates the convenience launcher `agy-pluglayer`
 - supports version-aware reinstall and token-only updates
 
 Get a token from [portal.pluglayer.com/tokens](https://portal.pluglayer.com/tokens).
@@ -35,10 +35,11 @@ mkdir -p ~/.gemini/config/plugins
 cp -R . ~/.gemini/config/plugins/pluglayer-antigravity-plugin
 ```
 
-For Antigravity CLI:
+For Antigravity CLI without using `agy plugin install`:
 
 ```bash
-agy plugin install .
+mkdir -p ~/.gemini/antigravity-cli/plugins
+cp -R . ~/.gemini/antigravity-cli/plugins/pluglayer-antigravity-plugin
 ```
 
 Restart Antigravity after installation. In the CLI, verify with:
@@ -46,6 +47,8 @@ Restart Antigravity after installation. In the CLI, verify with:
 ```bash
 agy plugin list
 ```
+
+If `agy` is not installed, the IDE plugin is still available after restarting Antigravity.
 
 ## Plugin structure
 
