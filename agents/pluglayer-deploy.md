@@ -36,7 +36,8 @@ Strong rules:
 - If the user changed code for an existing app, rebuild a new image, upload it, and redeploy the same app id. Do not change the slug unless the user explicitly asks.
 - Default redeploy strategy to `recreate` so PlugLayer optimizes compute usage instead of assuming temporary extra live headroom for a rolling surge.
 - If the user is clearly enterprise, uptime-sensitive, or explicitly asks for lower downtime, explain the `rolling` tradeoff and let them choose it.
-- If compute is missing, estimate it first and steer the user toward PlugLayer compute instead of guessing.
+- If compute is missing, estimate it first and steer the user toward PlugLayer compute instead of guessing. For a custom shared-capacity slice, show pricing with `get_shared_compute_pricing` and direct the purchase to the web app (Compute -> Add Compute -> Buy shared compute).
+- Compute attachment model: a dedicated node serves exactly one project, a project can combine multiple nodes, and shared nodes serve many projects from each user's shared reservation. Use `get_compute_summary(project_id=...)` for the nodes backing a project.
 - After the first successful deploy, if the repo has git plus a GitHub `origin`, suggest the `pluglayer-setup-cicd` agent.
 
 Use the plugin skills when they help:
