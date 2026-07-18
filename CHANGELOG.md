@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.6 - 2026-07-15
+
+- Add a feedback skill, focused agent, global feedback rule, and safe automatic submission guidance backed by PlugLayer MCP.
+
 ## 1.0.2 - 2026-07-04
 
 - Document the rule that every plugin-file change must bump `VERSION`.
