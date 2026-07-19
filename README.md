@@ -6,6 +6,7 @@ This public plugin gives Google Antigravity the same end-user PlugLayer workflow
 
 - PlugLayer MCP access through `uvx pluglayer-mcp`
 - skills for repo inspection, deployment, failed-deploy repair, domains, GitHub CI/CD, and feedback
+- secure runtime env import from key/value maps or exact selected dotenv/JSON/YAML content
 - focused deploy, repair, domain, CI/CD, and feedback agents
 - persistent PlugLayer deployment and feedback rules
 - an optional, disabled-by-default command-safety hook
@@ -79,6 +80,7 @@ The manifest follows the live Antigravity schema and intentionally keeps release
 - "Use the PlugLayer deploy agent and ship this app."
 - "Use the PlugLayer fix-deploy agent and repair this failed rollout."
 - "Set up GitHub Actions for the existing PlugLayer app."
+- "Merge the runtime variables from this `.env` file into my existing app and restart it without showing their values."
 - "Attach this custom domain and translate the DNS records for my provider."
 - "Report this PlugLayer problem and include only safe diagnostic context."
 
