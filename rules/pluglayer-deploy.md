@@ -16,4 +16,5 @@ Apply these rules when the user wants to deploy, update, troubleshoot, or attach
 12. Poll asynchronous PlugLayer tasks until completion and report the backend's real failure detail.
 13. Recognize transient recreate-rollout noise: an old revision may briefly show `Failed` while the new pod is `Pending`. Retry once before changing ports, probes, or app code.
 14. After a successful repo-backed deploy, offer GitHub Actions using `pluglayer/actions` to build, upload, and redeploy the same app id.
-15. Keep this plugin end-user scoped. Do not expose or invent admin-only cluster operations.
+15. Use `apply_app_env_vars` for arbitrary runtime env changes. Pass direct key/value data or exact selected dotenv/JSON/YAML content, never a filesystem path; choose merge versus replace explicitly and never echo values.
+16. Keep this plugin end-user scoped. Do not expose or invent admin-only cluster operations.
