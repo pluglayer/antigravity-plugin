@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.10 - 2026-07-26
+
+- Teach agents, rules, and deployment guidance to use `rename_project` for display-name-only project renames.
+
 ## 1.0.9 - 2026-07-26
 
 - Prevent GoDaddy apex CNAME instructions and guide users to a PlugLayer `www` domain plus GoDaddy HTTPS 301 forwarding.
