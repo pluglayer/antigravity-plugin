@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.9 - 2026-07-26
+
+- Prevent GoDaddy apex CNAME instructions and guide users to a PlugLayer `www` domain plus GoDaddy HTTPS 301 forwarding.
+
 ## 1.0.8 - 2026-07-19
 
 - Add secure arbitrary env import through MCP and document JSON, dotenv/config content, and reusable Action flows without returning secret values.
