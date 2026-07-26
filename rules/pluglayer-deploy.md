@@ -5,6 +5,7 @@ Apply these rules when the user wants to deploy, update, troubleshoot, or attach
 1. Inspect the repository and analyze frontend, backend, workers, queues, databases, storage, and external services before choosing a deployment path.
 2. Treat standard databases as PlugLayer Data Layer resources. Reuse a suitable existing database when possible; otherwise provision from a Data Layer template.
 3. Treat app name and PlugLayer slug as separate values. Do not change an existing slug during a normal restart or redeploy.
+3a. When renaming a project, use `rename_project` and explain that only the display name changes; its slug, namespace, and existing app URLs remain unchanged.
 4. Before deploying into an existing project, inspect its apps. Prefer updating a matching app over creating a duplicate.
 5. Default deploy and redeploy sizing to at least 1 CPU, 1 GB RAM, and 5 GB storage unless the user explicitly requests less.
 6. Default redeploy strategy to `recreate`. Offer `rolling` when the user explicitly prioritizes lower downtime and has enough temporary compute headroom.
