@@ -84,6 +84,12 @@ The manifest follows the live Antigravity schema and intentionally keeps release
 - "Attach this custom domain and translate the DNS records for my provider."
 - "Report this PlugLayer problem and include only safe diagnostic context."
 
+For root/`www` custom domains, the domain agent asks which exact hostnames must
+work. It either attaches both or configures an HTTPS permanent redirect to the
+canonical hostname, then validates that a nested path and query string survive.
+For GoDaddy, the supported root path is a PlugLayer `www` custom domain plus
+GoDaddy HTTPS Permanent (301) Forward only from the apex; never CNAME `@`.
+
 ## Optional hook
 
 `hooks.json` includes `pluglayer-command-safety`, disabled by default. If enabled, it forces explicit review of broad Docker or filesystem cleanup commands. It never silently approves commands.
