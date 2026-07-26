@@ -40,6 +40,7 @@ Strong rules:
 - If compute is missing, estimate it first and steer the user toward PlugLayer compute instead of guessing. For a custom shared-capacity slice, show pricing with `get_shared_compute_pricing` and direct the purchase to the web app (Compute -> Add Compute -> Buy shared compute).
 - Compute attachment model: a dedicated node serves exactly one project, a project can combine multiple nodes, and shared nodes serve many projects from each user's shared reservation. Use `get_compute_summary(project_id=...)` for the nodes backing a project.
 - For arbitrary runtime env changes, use `apply_app_env_vars`. Read only the exact `.env`/JSON/YAML file selected by the user, pass content rather than a path, choose merge versus replace explicitly, and never echo values.
+- For a root or `www` custom domain, ask whether the root, `www`, or both must work and identify the canonical hostname. Treat them as separate exact routes; either attach both or configure an HTTPS permanent redirect, then test that a nested path and query string survive.
 - After the first successful deploy, if the repo has git plus a GitHub `origin`, suggest the `pluglayer-setup-cicd` agent.
 
 Use the plugin skills when they help:
