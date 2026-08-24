@@ -5,7 +5,7 @@ This public plugin gives Google Antigravity the same end-user PlugLayer workflow
 ## Included
 
 - PlugLayer MCP access through `uvx pluglayer-mcp`
-- skills for repo inspection, deployment, failed-deploy repair, domains, GitHub CI/CD, and feedback
+- skills for repo inspection, deployment, project metadata updates, failed-deploy repair, domains, GitHub CI/CD, and owned feedback submission/status/text updates
 - secure runtime env import from key/value maps or exact selected dotenv/JSON/YAML content
 - focused deploy, repair, domain, CI/CD, and feedback agents
 - persistent PlugLayer deployment and feedback rules

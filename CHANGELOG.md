@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.13 - 2026-08-15
+
+- Add project display-name/description updates through `update_project_metadata`, including explicit description clearing and routing-identity safeguards.
+
+## 1.0.12 - 2026-08-15
+
+- Let users inspect feedback status and update an owned ticket's title/description, while keeping status and resolution admin-managed.
+- Check recent feedback and consolidate matching reports instead of creating repetitive tickets.
+
 ## 1.0.11 - 2026-07-26
 
 - Treat root and `www` as separate routes, require an explicit root redirect or attachment, and validate nested-path preservation.
