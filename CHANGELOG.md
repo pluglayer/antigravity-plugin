@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.14 - 2026-08-29
+
+- Support non-interactive quick setup from the portal's short-lived installer exchange.
+
 ## 1.0.13 - 2026-08-15
 
 - Add project display-name/description updates through `update_project_metadata`, including explicit description clearing and routing-identity safeguards.
