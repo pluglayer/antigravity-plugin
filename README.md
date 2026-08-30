@@ -99,3 +99,11 @@ GoDaddy HTTPS Permanent (301) Forward only from the apex; never CNAME `@`.
 - [Antigravity plugins](https://antigravity.google/docs/plugins)
 - [Antigravity CLI plugins and skills](https://antigravity.google/docs/cli-plugins)
 - [Antigravity MCP](https://antigravity.google/docs/mcp)
+
+## Marketplace templates
+
+Use `manage-templates` to author or clone private Compose templates, preview and test them,
+submit for admin review, track reviewer notes, and maintain template-backed apps.
+Start with: “Turn this Compose file into a private PlugLayer template and submit it
+after testing.” Public tools cannot approve or publish submissions. The matching
+backend and `pluglayer-mcp` release must be deployed before these tools are usable.
