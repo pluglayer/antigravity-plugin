@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.17
+
+- Bundle consent-gated plugin update guidance and always launch the latest compatible PlugLayer MCP package. Antigravity's strict manifest still permits only `name` and `description`, so it cannot declare an icon field.
+
 ## 1.0.16
 
 - Add app security checks, IP allowlist and rate-limit skills, and focused security routing.
