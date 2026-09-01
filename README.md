@@ -4,7 +4,7 @@ This public plugin gives Google Antigravity the same end-user PlugLayer workflow
 
 ## Included
 
-- PlugLayer MCP access through `uvx pluglayer-mcp`
+- PlugLayer MCP access through `uvx pluglayer-mcp@latest`
 - skills for repo inspection, deployment, project metadata updates, failed-deploy repair, domains, GitHub CI/CD, and owned feedback submission/status/text updates
 - secure runtime env import from key/value maps or exact selected dotenv/JSON/YAML content
 - focused deploy, repair, domain, CI/CD, and feedback agents
@@ -24,6 +24,9 @@ The installer:
 - installs the CLI plugin into `~/.gemini/antigravity-cli/plugins/pluglayer-antigravity-plugin`
 - does not require the `agy` CLI; when `agy` is installed, it also creates the convenience launcher `agy-pluglayer`
 - supports version-aware reinstall and token-only updates
+- checks installer-managed plugin versions at most once per 24 hours during
+  normal PlugLayer work, stays quiet when current, and installs only an exact
+  user-approved version from a pinned public repository commit
 
 Get a token from [portal.pluglayer.com/tokens](https://portal.pluglayer.com/tokens).
 
@@ -64,7 +67,7 @@ pluglayer-antigravity-plugin/
 └── skills/
 ```
 
-The manifest follows the live Antigravity schema and intentionally keeps release versioning in `VERSION`, because the current schema rejects undeclared manifest fields. Although the guide shows an optional `$schema` hint, Google's linked live schema does not currently permit that property.
+The manifest follows the live Antigravity schema and intentionally keeps release versioning in `VERSION`, because the current schema rejects undeclared manifest fields. Although the guide shows an optional `$schema` hint, Google's linked live schema does not currently permit that property. The same strict schema has no icon field, so the canonical PlugLayer icon is supplied on the MCP surface instead of adding an invalid manifest key.
 
 ## Agents
 
