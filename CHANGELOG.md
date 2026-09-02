@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.18
+
+- Plan dedicated compute per app, reuse project capacity first, prevent undersized machine bundles, and add confirmation-gated Extra Compute Requests.
+
 ## 1.0.17
 
 - Bundle consent-gated plugin update guidance and always launch the latest compatible PlugLayer MCP package. Antigravity's strict manifest still permits only `name` and `description`, so it cannot declare an icon field.
