@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.21
+
+- Proactively submit safe PlugLayer feedback for product-caused poor experiences, challenges, friction, confusing guidance, and bugs.
+
+## 1.0.20
+
+- Isolate the public Windows installer from all private Admin, Security Operations, and GTM product details.
+
 ## 1.0.19
 
 - Keep submitted feedback unchanged; create new follow-up tickets referencing the previous ticket, including recurrence after resolution.
