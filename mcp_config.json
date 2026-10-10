@@ -1,11 +1,5 @@
 {
   "mcpServers": {
-    "pluglayer": {
-      "command": "/bin/bash",
-      "args": [
-        "-lc",
-        "if [ -f \"$HOME/.pluglayer/credentials.env\" ]; then . \"$HOME/.pluglayer/credentials.env\"; fi; exec uvx pluglayer-mcp@latest"
-      ]
-    }
+    "pluglayer": {"serverUrl": "https://mcp.pluglayer.com/mcp"}
   }
 }
