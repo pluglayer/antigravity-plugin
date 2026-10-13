@@ -1,4 +1,4 @@
 {
   "name": "pluglayer-antigravity-plugin",
-  "description": "Deploy and operate PlugLayer apps from Antigravity; check app security, manage IP allowlists and rate limits, create templates, and share feedback."
+  "description": "Ship repos, containers, and Compose stacks to dedicated PlugLayer compute; connect databases and domains, inspect health, repair rollouts, manage CI/CD and security, launch templates, and share feedback from Antigravity."
 }
