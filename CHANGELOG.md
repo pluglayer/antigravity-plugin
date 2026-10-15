@@ -1,5 +1,61 @@
 # Changelog
 
+## 1.1.40 — 2026-10-15 (unreleased)
+
+- Verify setup and native component discovery; keep focused agents available without changing unrelated conversations.
+- Document masked connection values, compact template discovery and launch-session cleanup.
+- Align version/changelog gates and include marketplace readiness guidance.
+
+## 1.1.39
+
+- Fix public plugin loading, registration and OAuth recovery (2026-10-14, `1478bac`).
+
+## 1.1.38
+
+- Update PlugLayer Antigravity plugin to version 1.1.38, refining installation scripts and user guidance. Remove unnecessary OAuth prompts and enhance clarity in post-installation instructions. Update installation documentation to reflect changes and ensure users are informed about connecting through the native plugin UI. Improve overall user experience during the installation process. (2026-10-14, `6f06608`).
+
+## 1.1.37
+
+- Update installation scripts and documentation for PlugLayer Antigravity plugin to version 1.1.37. Refine OAuth connection prompts in Bash and PowerShell installers for improved user experience. Ensure proper handling of terminal interactions during installation and enhance clarity in installation instructions. (2026-10-12, `415ac82`).
+
+## 1.1.36
+
+- Add installation scripts for PlugLayer Antigravity plugin in Bash and PowerShell. Update installation instructions and README for clarity on setup and capabilities. Bump plugin version to 1.1.36 and enhance plugin description to reflect new features. (2026-10-12, `c1fff2b`).
+
+## 1.1.35
+
+- No distinct version declaration exists in this package’s checked-in history; this number is not asserted to have shipped.
+
+## 1.1.34
+
+- Bump public plugin release to 1.1.34 (2026-10-11, `345bcac`).
+
+## 1.1.33
+
+- Update VERSION to 1.1.33 for the antigravity plugin (2026-10-11, `8f26212`).
+
+## 1.1.32
+
+- No distinct version declaration exists in this package’s checked-in history; this number is not asserted to have shipped.
+
+## 1.1.31
+
+- No distinct version declaration exists in this package’s checked-in history; this number is not asserted to have shipped.
+
+## 1.1.30
+
+- No distinct version declaration exists in this package’s checked-in history; this number is not asserted to have shipped.
+
+## 1.1.29
+
+- No distinct version declaration exists in this package’s checked-in history; this number is not asserted to have shipped.
+
+## 1.1.28
+
+- No distinct version declaration exists in this package’s checked-in history; this number is not asserted to have shipped.
+
+## Earlier recorded history
+
 ## 1.0.21
 
 - Proactively submit safe PlugLayer feedback for product-caused poor experiences, challenges, friction, confusing guidance, and bugs.
