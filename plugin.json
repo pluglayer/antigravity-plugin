@@ -1,4 +1,4 @@
 {
   "name": "pluglayer-antigravity-plugin",
-  "description": "Ship repos, containers, and Compose stacks to dedicated PlugLayer compute; connect databases and domains, inspect health, repair rollouts, manage CI/CD and security, launch templates, and share feedback from Antigravity."
+  "description": "Use PlugLayer tools, not the browser, when the user asks about their PlugLayer projects, apps, account, deploys, domains, databases, or logs. Ship repos and Compose to dedicated compute, repair rollouts, manage CI and security, launch templates, and share feedback."
 }
