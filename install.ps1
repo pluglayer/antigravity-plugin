@@ -120,6 +120,28 @@ function Write-PublicCatalog([string]$Path, $Value) {
     }
     Write-Json $Path $Value
 }
+$script:OauthNote = "Connect PlugLayer through $label's native plugin connection UI when needed."
+function Set-ManualSignIn { $script:OauthNote = 'Sign in from Plugins -> PlugLayer -> Connector -> Authenticate.' }
+function Start-NativeSignIn([string]$Server) {
+    $help = Capture-Native @('mcp','--help')
+    if ($help.output -notmatch '(^|[^A-Za-z0-9_-])login([^A-Za-z0-9_-]|$)') {
+        if ($target -eq 'claude-code') { $script:OauthNote = 'Sign in from Plugins -> PlugLayer -> Connector -> Authenticate. Claude Code 2.1.186 or newer opens this sign-in from the installer.' }
+        elseif ($target -eq 'antigravity') { Set-ManualSignIn }
+        return
+    }
+    $listed = Capture-Native @('mcp','list')
+    $line = @($listed.output -split "`n" | Where-Object { $_.Contains($Server) } | Select-Object -First 1) -join ''
+    if ($line -and $line -match '(?i)connected|ready' -and $line -notmatch '(?i)needs authentication|not authenticated|auth needed') {
+        $script:OauthNote = 'PlugLayer is already signed in.'
+        return
+    }
+    if ($target -ne 'claude-code' -and (!$line -or $line -notmatch '(?i)needs authentication|not authenticated|auth needed|authenticate')) { return }
+    Say 'Opening PlugLayer sign-in in your browser.'
+    try {
+        & $cli mcp login $Server
+        if ($LASTEXITCODE -eq 0) { $script:OauthNote = 'PlugLayer is signed in.' } else { Set-ManualSignIn }
+    } catch { Set-ManualSignIn }
+}
 function Verify-PublicRegistration {
     $result = Capture-Native @('plugin','list')
     if ($result.exitCode -ne 0) { throw 'Could not verify PlugLayer registration.' }
@@ -168,17 +190,23 @@ try {
         if (!(Test-Path -LiteralPath $dest)) { Copy-Item -LiteralPath $package -Destination $dest -Recurse }
         if (Test-Path -LiteralPath $managed) { Remove-Item -LiteralPath $managed -Recurse -Force }
         Copy-Item -LiteralPath $package -Destination $managed -Recurse
-        if ($target -eq 'codex') { $catalog = @{ name=$marketName; interface=@{displayName='PlugLayer'}; plugins=@(@{name=$publicName;source=@{source='local';path='./plugins/pluglayer-codex-plugin'};policy=@{installation='AVAILABLE';authentication='ON_INSTALL'};category='Developer Tools'}) }; Write-PublicCatalog (Join-Path (Join-Path $marketplace $catalogDir) 'marketplace.json') $catalog; Register-PublicMarketplace; Run $cli @('plugin','add',($publicName + '@' + $marketName)) }
-        else { $catalog = @{ name=$marketName; owner=@{name='PlugLayer'}; plugins=@(@{name=$publicName;source='./plugins/pluglayer';version=$version}) }; Write-PublicCatalog (Join-Path (Join-Path $marketplace $catalogDir) 'marketplace.json') $catalog; Register-PublicMarketplace; Run $cli @('plugin','install',($publicName + '@' + $marketName),'--scope','user'); Run $cli @('plugin','update',($publicName + '@' + $marketName),'--scope','user') }
+        if ($target -eq 'codex') { $catalog = @{ name=$marketName; interface=@{displayName='PlugLayer'}; plugins=@(@{name=$publicName;source=@{source='local';path='./plugins/pluglayer-codex-plugin'};policy=@{installation='AVAILABLE';authentication='ON_INSTALL'};category='Developer Tools'}) }; Write-PublicCatalog (Join-Path (Join-Path $marketplace $catalogDir) 'marketplace.json') $catalog; Register-PublicMarketplace; Remove-LegacyPlugin ($publicName + '@' + $marketName); Run $cli @('plugin','add',($publicName + '@' + $marketName)) }
+        else { $catalog = @{ name=$marketName; owner=@{name='PlugLayer'}; plugins=@(@{name=$publicName;source='./plugins/pluglayer';version=$version}) }; Write-PublicCatalog (Join-Path (Join-Path $marketplace $catalogDir) 'marketplace.json') $catalog; Register-PublicMarketplace; Remove-LegacyPlugin ($publicName + '@' + $marketName); Run $cli @('plugin','install',($publicName + '@' + $marketName),'--scope','user'); Run $cli @('plugin','update',($publicName + '@' + $marketName),'--scope','user') }
         Migrate-PublicCatalogs
         if ($target -eq 'codex') { Verify-PublicRegistration } else { Run $cli @('plugin','list') }
     } elseif ($target -eq 'cursor') {
         $dest = Join-Path $HOME '.cursor\plugins\local\pluglayer-cursor-plugin'; $managed = Join-Path $HOME ('.pluglayer\plugin-state\cursor-' + $environmentId)
-        if ((Test-Path -LiteralPath $dest) -and !(Assert-Same $dest $package)) { if (!(Assert-Same $dest $managed)) { throw "Preserving user-edited Cursor plugin: $dest. Resolve it using the prompt option." }; Remove-Item $dest -Recurse -Force }
+        if ((Test-Path -LiteralPath $dest) -and !(Assert-Same $dest $package)) { Remove-Item $dest -Recurse -Force }
         New-Item -ItemType Directory -Force -Path (Split-Path $dest),(Split-Path $managed) | Out-Null; if (!(Test-Path $dest)) { Copy-Item $package $dest -Recurse }; if (Test-Path $managed) { Remove-Item $managed -Recurse -Force }; Copy-Item $package $managed -Recurse; Say 'Cursor loads the complete local plugin. Reload any open Cursor window.'
-    } else { Run $cli @('plugin','install',$package); Run $cli @('plugin','list') }
+    } else {
+        $removed = Capture-Native @('plugin','uninstall','pluglayer-antigravity-plugin')
+        if ($removed.exitCode -ne 0 -and $removed.output -notmatch '(?i)not installed|not found|could not find|no plugin') { throw 'Could not replace the installed PlugLayer plugin. Resolve the native plugin manager error and retry.' }
+        Run $cli @('plugin','install',$package); Run $cli @('plugin','list')
+    }
     if ($installedUrl) { try { Invoke-RestMethod -Method Post -Uri $installedUrl | Out-Null } catch { Write-Warning 'Package installed; portal status could not refresh.' } }
     Say "4/4 · PlugLayer $version installed in $label"
     Say "Restart or reload $label if the plugin is not visible in your current session."
-    Say "Connect PlugLayer through $label's native plugin connection UI when needed."
+    if ($target -eq 'claude-code') { Start-NativeSignIn 'plugin:pluglayer:pluglayer' }
+    elseif ($target -eq 'cursor' -or $target -eq 'antigravity') { Start-NativeSignIn 'pluglayer' }
+    Say $script:OauthNote
 } catch { try { Invoke-RestMethod -Method Post -Uri $failureUrl | Out-Null } catch {}; throw } finally { if (Test-Path $work) { Remove-Item $work -Recurse -Force } }
